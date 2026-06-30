@@ -1,30 +1,14 @@
-import{a as c,S as u,i as d}from"./assets/vendor-C6x3Vi_0.js";(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))a(e);new MutationObserver(e=>{for(const r of e)if(r.type==="childList")for(const o of r.addedNodes)o.tagName==="LINK"&&o.rel==="modulepreload"&&a(o)}).observe(document,{childList:!0,subtree:!0});function i(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerPolicy&&(r.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?r.credentials="include":e.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function a(e){if(e.ep)return;e.ep=!0;const r=i(e);fetch(e.href,r)}})();const f="56499472-080893bfed44fcf3a0d134fcd",m="https://pixabay.com/api/";function p(s){const t={key:f,q:s,image_type:"photo",orientation:"horizontal",safesearch:!0};return c.get(m,{params:t})}function y(s){return s.map(t=>`
-        <li class="gallery-item">
-          <a class="gallery-link" href="${t.largeImageURL}">
-            <img 
-              class="gallery-image" 
-              src="${t.webformatURL}" 
-              alt="${t.tags}" 
-            />
-          </a>
-          <div class="info-block">
-            <div class="info-item">
-              <b class="info-title">Likes</b>
-              <span class="info-value">${t.likes}</span>
-            </div>
-            <div class="info-item">
-              <b class="info-title">Views</b>
-              <span class="info-value">${t.views}</span>
-            </div>
-            <div class="info-item">
-              <b class="info-title">Comments</b>
-              <span class="info-value">${t.comments}</span>
-            </div>
-            <div class="info-item">
-              <b class="info-title">Downloads</b>
-              <span class="info-value">${t.downloads}</span>
-            </div>
-          </div>
-        </li>
-      `).join("")}const g=document.querySelector(".form"),n=document.querySelector(".gallery"),l=document.querySelector(".loader"),h=new u(".gallery a",{captionsData:"alt",captionDelay:250});g.addEventListener("submit",s=>{s.preventDefault();const t=s.currentTarget.elements["search-text"].value.trim();t!==""&&(n.innerHTML="",l.classList.remove("is-hidden"),p(t).then(i=>{const a=i.data.hits;if(a.length===0){d.error({message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"});return}const e=y(a);n.insertAdjacentHTML("beforeend",e),h.refresh()}).finally(()=>{l.classList.add("is-hidden")}))});
+import{a as d,S as f,i as n}from"./assets/vendor--e875Ek4.js";(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))a(t);new MutationObserver(t=>{for(const s of t)if(s.type==="childList")for(const i of s.addedNodes)i.tagName==="LINK"&&i.rel==="modulepreload"&&a(i)}).observe(document,{childList:!0,subtree:!0});function o(t){const s={};return t.integrity&&(s.integrity=t.integrity),t.referrerPolicy&&(s.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?s.credentials="include":t.crossOrigin==="anonymous"?s.credentials="omit":s.credentials="same-origin",s}function a(t){if(t.ep)return;t.ep=!0;const s=o(t);fetch(t.href,s)}})();const u="56499472-080893bfed44fcf3a0d134fcd",m="https://pixabay.com/api/";function p(r){return d.get(m,{params:{key:u,q:r,image_type:"photo",orientation:"horizontal",safesearch:!0}}).then(e=>e.data)}const l=document.querySelector(".gallery"),c=document.querySelector(".loader"),y=new f(".gallery a",{captionsData:"alt",captionDelay:250}),h=()=>l.innerHTML="",g=()=>c.classList.remove("is-hidden"),v=()=>c.classList.add("is-hidden");function b(r){l.insertAdjacentHTML("beforeend",r.map(e=>`
+    <li class="gallery-item">
+      <a class="gallery-link" href="${e.largeImageURL}">
+        <img class="gallery-image" src="${e.webformatURL}" alt="${e.tags}" />
+      </a>
+      <div class="info-block">
+        <div class="info-item"><b class="info-title">Likes</b><span class="info-value">${e.likes}</span></div>
+        <div class="info-item"><b class="info-title">Views</b><span class="info-value">${e.views}</span></div>
+        <div class="info-item"><b class="info-title">Comments</b><span class="info-value">${e.comments}</span></div>
+        <div class="info-item"><b class="info-title">Downloads</b><span class="info-value">${e.downloads}</span></div>
+      </div>
+    </li>
+  `).join("")),y.refresh()}document.querySelector(".form").addEventListener("submit",r=>{r.preventDefault();const e=r.currentTarget.elements["search-text"].value.trim();e&&(h(),g(),p(e).then(o=>{if(!o.hits.length)return n.error({message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"});b(o.hits)}).catch(()=>n.error({message:"Something went wrong. Please try again later!",position:"topRight"})).finally(v))});
 //# sourceMappingURL=index.js.map
