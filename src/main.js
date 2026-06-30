@@ -1,53 +1,37 @@
 import { getImagesByQuery } from './js/pixabay-api.js';
-import { createImageGalleryMarkup } from './js/render-functions.js';
+import {
+  renderGallery,
+  clearGallery,
+  showLoader,
+  hideLoader,
+} from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+document.querySelector('.form').addEventListener('submit', e => {
+  e.preventDefault();
+  const query = e.currentTarget.elements['search-text'].value.trim();
+  if (!query) return;
 
-const imageSearchForm = document.querySelector('.form');
-const imagesGalleryContainer = document.querySelector('.gallery');
-const loadingSpinner = document.querySelector('.loader');
+  clearGallery();
+  showLoader();
 
-const galleryLightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
-
-imageSearchForm.addEventListener('submit', event => {
-  event.preventDefault();
-
-  const userSearchQuery =
-    event.currentTarget.elements['search-text'].value.trim();
-
-  if (userSearchQuery === '') {
-    return;
-  }
-
-  imagesGalleryContainer.innerHTML = '';
-
-  loadingSpinner.classList.remove('is-hidden');
-
-  getImagesByQuery(userSearchQuery)
-    .then(apiResponse => {
-      const receivedImagesArray = apiResponse.data.hits;
-
-      if (receivedImagesArray.length === 0) {
-        iziToast.error({
+  getImagesByQuery(query)
+    .then(data => {
+      if (!data.hits.length) {
+        return iziToast.error({
           message:
             'Sorry, there are no images matching your search query. Please try again!',
           position: 'topRight',
         });
-        return;
       }
-
-      const generatedMarkup = createImageGalleryMarkup(receivedImagesArray);
-      imagesGalleryContainer.insertAdjacentHTML('beforeend', generatedMarkup);
-
-      galleryLightbox.refresh();
+      renderGallery(data.hits);
     })
-    .finally(() => {
-      loadingSpinner.classList.add('is-hidden');
-    });
+    .catch(() =>
+      iziToast.error({
+        message: 'Something went wrong. Please try again later!',
+        position: 'topRight',
+      })
+    )
+    .finally(hideLoader);
 });
